@@ -87,8 +87,12 @@ namespace Library.Web.Controllers
             }                      
 
             try
-            {             
-               User user = await _accountManager.CreateAsync(viewModel.Username, viewModel.Password, viewModel.MembershipType);
+            {
+                viewModel = new RegisterViewModel() { MembershipOption = new List<SelectListItem>() };
+                viewModel.MembershipOption.Add(new SelectListItem { Text = Constants.SubscrOneMonth, Value = "1" });
+                viewModel.MembershipOption.Add(new SelectListItem { Text = Constants.SubscrOneYear, Value = "12" });
+
+                User user = await _accountManager.CreateNewUserAsync(viewModel.Username, viewModel.Password, viewModel.MembershipType);
 
                 await SignInUserAsync(user);
 

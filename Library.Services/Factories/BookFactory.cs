@@ -36,7 +36,7 @@ namespace Library.Services.Factories
                     });
                 }
             }
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.SaveChangesAsync();
         }
     }
 }

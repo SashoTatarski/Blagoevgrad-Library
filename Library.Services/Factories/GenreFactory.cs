@@ -16,18 +16,22 @@ namespace Library.Services.Factories
 
         public async Task<Genre> CreateGenreAsync(string genreName)
         {
-            var existingGenre = await _context.Genres.FirstOrDefaultAsync(g => g.Name.ToLower() == genreName.ToLower()).ConfigureAwait(false);
+            var existingGenre = await _context.Genres
+                .FirstOrDefaultAsync(g => string.Equals(g.Name, genreName, System.StringComparison.OrdinalIgnoreCase));
 
-            if (existingGenre is null)
+            if (!(existingGenre is null))
+            {
+                return existingGenre;
+            }
+            else
             {
                 var newGenre = new Genre { Name = genreName };
 
-                await _context.Genres.AddAsync(newGenre).ConfigureAwait(false);
-                await _context.SaveChangesAsync().ConfigureAwait(false);
+                await _context.Genres.AddAsync(newGenre);
+                await _context.SaveChangesAsync();
+
                 return newGenre;
             }
-            else
-                return existingGenre;
         }
     }
 }

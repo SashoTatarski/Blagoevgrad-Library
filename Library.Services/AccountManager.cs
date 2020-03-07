@@ -50,29 +50,29 @@ namespace Library.Services
 
         public async Task<User> ActivateUserAsync(string id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == id).ConfigureAwait(false);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Id.ToString() == id);
             user.Status = AccountStatus.Active;
 
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.SaveChangesAsync();
 
             return user;
         }
 
         public async Task DeleteUserAsync(string id)
         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.ToString() == id).ConfigureAwait(false);
-
+            var user = await _context.Users.FirstOrDefaultAsync(x => x.Id.ToString() == id);
             user.Status = AccountStatus.Inactive;
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+
+            await _context.SaveChangesAsync();
         }
 
         // TODO fix banned users
         public async Task BanUserAsync(string id)
         {
-            var user = await _context.Users.Where(u => u.Id.ToString() == id).FirstOrDefaultAsync().ConfigureAwait(false);
-
+            var user = await _context.Users.Where(u => u.Id.ToString() == id).FirstOrDefaultAsync();
             user.Status = AccountStatus.Banned;
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+
+            await _context.SaveChangesAsync();
             await this.CreateBannedUserAsync(user);
         }
 
@@ -87,7 +87,7 @@ namespace Library.Services
             };
 
             _context.BannedUsers.Add(bannedUser);
-            await _context.SaveChangesAsync().ConfigureAwait(false);
+            await _context.SaveChangesAsync();
         }
 
         public void CheckStatus(User user)
@@ -113,7 +113,7 @@ namespace Library.Services
             .ToListAsync().ConfigureAwait(false);
 
 
-        public async Task<User> CreateAsync(string username, string password, int membershipMonths)
+        public async Task<User> CreateNewUserAsync(string username, string password, int membershipMonths)
         {
             if (_context.Users.Any(u => u.Username == username))
             {
@@ -161,8 +161,7 @@ namespace Library.Services
         {
             return await _context.Users
                 .Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.Role.RoleName == "admin")
-                .ConfigureAwait(false);
+                .FirstOrDefaultAsync(u => u.Role.RoleName == "admin");                
         }
     }
 }

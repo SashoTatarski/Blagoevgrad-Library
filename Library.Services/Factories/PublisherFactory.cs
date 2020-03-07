@@ -15,9 +15,14 @@ namespace Library.Services.Factories
         }
         public async Task<Publisher> CreatePublisherAsync(string name)
         {
-            var existingPublisher = await _context.Publishers.FirstOrDefaultAsync(p => string.Equals(p.Name, name, System.StringComparison.OrdinalIgnoreCase)).ConfigureAwait(false);
+            var existingPublisher = await _context.Publishers
+                .FirstOrDefaultAsync(p => string.Equals(p.Name, name, System.StringComparison.OrdinalIgnoreCase));
 
-            if (existingPublisher is null)
+            if (!(existingPublisher is null))
+            {
+                return existingPublisher;
+            }
+            else
             {
                 var newPublisher = new Publisher { Name = name };
                 await _context.Publishers.AddAsync(newPublisher).ConfigureAwait(false);
@@ -25,8 +30,6 @@ namespace Library.Services.Factories
 
                 return newPublisher;
             }
-            else
-                return existingPublisher;
         }
     }
 }
