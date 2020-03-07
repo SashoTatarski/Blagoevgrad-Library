@@ -1,0 +1,58 @@
+﻿@model BookIssuedViewModel
+@{
+    ViewData["Title"] = "_BooksReservationsPartial";
+}
+
+<tr>
+    <td class="text-left">
+        <a asp-controller="BookManagement" asp-action="AuthorDetails" asp-route-id="@Model.Author.Id" span title="All Books From @Model.Author.Name">@Model.Author.Name</a>
+    </td>
+    <td class="text-left">
+        <a asp-controller="BookManagement" asp-action="BookDetails" asp-route-id="@Model.ISBN" span title="View Book Details"> @Model.Title</a>
+    </td>
+
+    <td class="text-left">@Model.ISBN</td>
+    <td class="text-left">@Model.StartDate?.ToString("dd.MM.yyyy")</td>
+
+    <td class="text-left">@Model.EndDate?.ToString("dd.MM.yyyy")</td>
+
+    @if (User.IsInRole("user"))
+    {
+        <td class="text-center">
+            @*when the book is reserved*@
+            @if (Model.IsReserved)
+            {
+                <a class="btn btn-secondary" asp-controller="UserBooks" asp-action="CancelReservation" asp-route-id="@Model.BookId">Cancel Reservation</a>
+            }
+            @*when the book is only checkedout*@
+            else
+            {
+                @if (Model.Status == "CheckedOutAndReserved" || Model.UserStatus == "Restricted")
+                {
+                    <a class="btn btn-secondary" asp-controller="UserBooks" asp-action="ReturnBook" asp-route-id="@Model.ISBN">Return</a>
+                    <a class="btn btn-info disabled" role="button" aria-disabled="true">Extend</a>
+                }
+                else if (Model.Status == "CheckedOut")
+                {
+                    <a class="btn btn-secondary" asp-controller="UserBooks" asp-action="ReturnBook" asp-route-id="@Model.ISBN">Return</a>
+                    <a class="btn btn-info" asp-controller="UserBooks" asp-action="ExtendDueDate" asp-route-id="@Model.ISBN">Extend</a>
+                    <br />
+                }
+
+                @if (!Model.IsBookRatedByUser)
+                {
+                    <div class="form-group text-center">
+                        <form asp-action="RateBook" asp-controller="UserBooks" method="post">
+                            <div class="row" style="margin-left: 18px; margin-top: 10px ">
+                                <input type="hidden" asp-for="ISBN" value="@Model.ISBN" />
+                                <select asp-for="@Model.Rate" asp-items="@Model.RatingList" class="form-control" style="width:74px">
+                                </select>
+                                <button type="submit" class="btn btn-info" style="margin-left: 5px; width: 71px ">Rate</button>
+                            </div>
+                        </form>
+                    </div>
+                }
+            }
+        </td>
+    }
+</tr>

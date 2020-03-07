@@ -1,0 +1,122 @@
+﻿@model UserViewModel
+@using Library.Models.Enums;
+@using System.Globalization;
+@{
+    ViewData["Title"] = "_UsersPartial";
+}
+
+<tr>
+    <td class="text-left">
+        <a asp-controller="AccountManagement" asp-action="Details" asp-route-id="@Model.UserId">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            @Model.Username
+        </a>
+    </td>
+    <td class="text-left">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        @Model.MembershipStartDate.ToString("dd.MM.yyyy")
+    </td>
+    <td class="text-left">
+        <i class="fa fa-calendar" aria-hidden="true"></i>
+        @Model.MembershipEndDate.ToString("dd.MM.yyyy")
+    </td>
+    <td class="text-left">
+        @Model.Wallet.ToString("C", CultureInfo.CurrentCulture)
+    </td>
+
+    @if (Model.Status == AccountStatus.Active)
+    {
+        <td class="text-center" title="Active">
+            <i class="fas fa-check-circle text-success"></i>
+        </td>
+    }
+    else if (Model.Status == AccountStatus.Inactive)
+    {
+        <td class="text-center" title="Inactive">
+            <i class="fas fa-times-circle text-danger"></i>
+        </td>
+    }
+    else if (Model.Status == AccountStatus.Banned)
+    {
+        <td class="text-center" title="Banned">
+            <i class="fas fa-ban text-danger"></i>
+        </td>
+    }
+
+    <td class="text-center">
+        @if (Model.Status == AccountStatus.Active)
+        {
+            <a data-toggle="modal" href="#b-@Model.UserId" class="text-danger ml-1" title="Deactivate">
+                <i class="fas fa-times text-danger icon-action"></i>
+            </a>
+            //!--Modal--
+            <div class="modal fade" id="b-@Model.UserId" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Are you sure?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-left">
+                            Are you sure you want to deactivate @Model.Username?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                No
+                            </button>
+                            <a type="button" class="btn btn-info" asp-controller="AccountManagement" asp-action="Delete" asp-route-id="@Model.UserId">
+                                Yes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a data-toggle="modal" href="#a-@Model.UserId" class="text-danger ml-1" title="Ban">
+                <i class="fas fa-ban text-danger icon-action"></i>
+            </a>
+            //!--Modal--
+            <div class="modal fade" id="a-@Model.UserId" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Are you sure?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-left">
+                            Are you sure you want to ban @Model.Username?
+                        </div>
+                        <div class="modal-body">
+                            <form>
+                                <div class="form-group">
+                                    <label class="col-form-label text-left">Description</label>
+                                    <input asp-for="BanDescription" class="form-control" type="text" />
+                                    <span asp-validation-for="BanDescription" class="text-danger">  </span>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                No
+                            </button>
+                            <a type="button" class="btn btn-info" asp-controller="AccountManagement" asp-action="Ban" asp-route-id="@Model.UserId">
+                                Yes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <a asp-controller="AccountManagement" asp-action="Activate" asp-route-id="@Model.UserId" class="text-success ml-1" title="Activate">
+                <i class="fas fa-check text-success icon-action"></i>
+            </a>
+        }
+
+    </td>
+</tr>

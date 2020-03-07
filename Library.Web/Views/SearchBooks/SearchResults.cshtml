@@ -1,0 +1,79 @@
+﻿@model SearchViewModel
+@using Microsoft.Extensions.Primitives;
+@{
+    ViewData["Title"] = "SearchResults";
+}
+
+<div class="row mt-5">
+    <form class="row col-sm-12" asp-controller="SearchBooks" asp-action="SearchResults" method="post">
+
+        <div class="col-sm-7" style="padding-left: 0">
+            <input asp-for="@Model.SearchName" placeholder="Search..." class="form-control" />
+        </div>
+        <div class="col-sm-1">
+            <button type="submit" class="btn btn-info">Search!</button>
+        </div>
+        <div class="col-sm-4" style="display: flex; align-items: center; justify-content: flex-end; padding-right: 0;">
+            <div class=" form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" asp-for="ByTitle">
+                <label class="form-check-label" asp-for="ByTitle">Title</label>
+            </div>
+            <div class=" form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" asp-for="ByAuthor">
+                <label class="form-check-label" asp-for="ByAuthor">Author</label>
+            </div>
+            <div class=" form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" asp-for="ByPublisher">
+                <label class="form-check-label" asp-for="ByPublisher">Publisher</label>
+            </div>
+            <div class=" form-check form-check-inline">
+                <input class="form-check-input" type="checkbox" asp-for="ByGenre">
+                <label class="form-check-label" asp-for="ByGenre">Genre</label>
+            </div>
+        </div>
+    </form>
+
+    @if (!Model.BookSearchResults.Any())
+    {
+        <div class="row mt-3 col-sm-12">
+            <p class="alert alert-info" style="width:1200px">There are no books</p>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-3 mb-5 col-sm-12">
+            <table class="table">
+                <thead class="thead-dark">
+                    <tr>
+                        <th style="width: 140px">Author</th>
+                        <th style="width: 280px">Title</th>
+                        <th style="width: 140px">Publisher</th>
+                        <th>ISBN</th>
+                        <th class="text-center">Year</th>
+                        <th class="text-center">Rack</th>
+                        <th class="text-center">Rating</th>
+
+                        @if (User.IsInRole("admin"))
+                        {
+                            <th class="text-center">Copies</th>
+                        }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <th class="text-center" style="width: 220px">Actions</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var book in Model.BookSearchResults)
+                    {
+                        <partial name="_BooksPartial" model="book" />
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<partial name="_ReturnButtonsPartial" />
+

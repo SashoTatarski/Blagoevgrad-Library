@@ -1,0 +1,79 @@
+﻿@model UserViewModel
+@using System.Globalization;
+@using Library.Models.Enums;
+@using Microsoft.Extensions.Primitives
+@{
+    ViewData["Title"] = "UserDetails";
+}
+
+<div>
+    <h2>@Model.Username</h2>
+    <hr />
+    <div>
+        <div>
+            <a class="font-weight-bold">Membership Start: </a>
+            <a>@Model.MembershipStartDate.ToString("dd.MM.yyyy")</a>
+        </div>
+        <div>
+            <a class="font-weight-bold">Membership End: </a>
+            <a>@Model.MembershipEndDate.ToString("dd.MM.yyyy")</a>
+        </div>
+        <div>
+            <a class="font-weight-bold">Wallet: </a>
+            <a>@Model.Wallet.ToString("C", CultureInfo.CurrentCulture)</a>
+        </div>
+        <div>
+            <a class="font-weight-bold">Status: </a>
+            @if (Model.Status == AccountStatus.Active)
+            {
+                <a class="text-success">@Model.Status</a>
+            }
+            else
+            {
+                <a class="text-danger">@Model.Status</a>
+            }
+        </div>
+
+        <table class="table table-stripped table-bordered table-sm">
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Checkout Date</th>
+                <th>Due Date</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            <hr />
+
+            <h3>Checked Out Books by @Model.Username</h3>
+            <p></p>
+            @foreach (var book in Model.CheckedoutBooks)
+            {
+                <partial name="_BooksReservationsPartial" model="book" />
+            }
+        </table>
+
+        <table class="table table-stripped table-bordered table-sm">
+            <tr>
+                <th>Author</th>
+                <th>Title</th>
+                <th>ISBN</th>
+                <th>Checkout Date</th>
+                <th>Due Date</th>
+                <th class="text-center">Actions</th>
+            </tr>
+            <hr />
+
+            <h3>Reserved Books by @Model.Username</h3>
+            <p></p>
+            @foreach (var book in Model.ReservedBooks)
+            {
+                <partial name="_BooksReservationsPartial" model="book" />
+            }
+
+        </table>
+
+    </div>
+</div>
+<partial name="_ReturnButtonsPartial" />
+

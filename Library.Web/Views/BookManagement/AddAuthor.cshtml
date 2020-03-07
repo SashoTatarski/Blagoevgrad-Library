@@ -1,0 +1,19 @@
+﻿@model AuthorViewModel
+@{
+    ViewData["Title"] = "AddAuthor";
+}
+
+<div class="col-md-4">
+    <h5>Add Author</h5>
+    <form asp-action="AddAuthor" asp-controller="BookManagement" method="post">
+        <div class="form-group">
+            <label asp-for="AuthorName" class="control-label"> Enter new author's name </label>
+            <input asp-for="AuthorName" class="form-control" />
+            <span asp-validation-for="AuthorName" class="text-danger">  </span>
+        </div>       
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+</div>
+<partial name="_ReturnButtonsPartial" />

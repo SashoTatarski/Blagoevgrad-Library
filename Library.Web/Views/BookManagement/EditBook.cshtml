@@ -1,0 +1,161 @@
+﻿@model BookViewModel
+@{
+    ViewData["Title"] = "EditBook";
+}
+
+<div class="col-md-4">
+    <h5>Edit Book</h5>
+    <form asp-action="EditBook" asp-controller="BookManagement" method="post">
+        <div class="form-group">
+            <label asp-for="Title" class="control-label"> </label>
+            <input value="@Model.Title" asp-for="Title" class="form-control" />
+            <span asp-validation-for="Title" class="text-danger">  </span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Author</label>
+            <button class="btn btn-primary" id="add-author" type="button">Create Author</button>
+            <select asp-for="@Model.AuthorId" asp-items="@Model.Authors" class="form-control" id="authors-selectlist">
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Publisher</label>
+            <button class="btn btn-primary" id="add-publisher" type="button">Create Publisher</button>
+            <select asp-for="@Model.PublisherId" asp-items="@Model.Publishers" class="form-control" id="publisher-selectlist">
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Genres</label>
+            <button class="btn btn-primary" id="add-genre" type="button">Create Genre</button>
+            <select asp-for="@Model.GenresIds" asp-items="@Model.GenresOptions" class="form-control" id="genre-selectlist">
+            </select>
+        </div>
+        <div class="form-group">
+            <label class="control-label">ISBN</label>
+            <input asp-for="ISBN" class="form-control" />
+            <span asp-validation-for="ISBN" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Year</label>
+            <input asp-for="Year" class="form-control" />
+            <span asp-validation-for="Year" class="text-danger">  </span>
+        </div>
+        <div class="form-group">
+            <label class="control-label">Rack</label>
+            <input asp-for="Rack" class="form-control" />
+            <span asp-validation-for="Rack" class="text-danger">  </span>
+        </div>
+        <input type="hidden" asp-for="BookId" value="@Model.BookId" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+
+    </form>
+</div>
+
+@*Create Author Modal*@
+<div class="modal fade" id="create-author-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Author</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                Enter new author name:
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="new-author-name" />
+                        <span class="text-danger">  </span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-info" id="create-author">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Create Publisher Modal*@
+<div class="modal fade" id="create-publisher-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Publisher</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                Enter new publisher name:
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="new-publisher-name" />
+                        <span class="text-danger">  </span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-info" id="create-publisher">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*Create Genre Modal*@
+<div class="modal fade" id="create-genre-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Create Genre</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-left">
+                Enter new genre name:
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <input class="form-control" type="text" id="new-genre-name" />
+                        <span class="text-danger">  </span>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">
+                    Cancel
+                </button>
+                <button type="button" class="btn btn-info" id="create-genre">
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+
+<partial name="_ReturnButtonsPartial" />
+
+@section Scripts {
+    <script src="~/js/add-book.js"></script>
+}

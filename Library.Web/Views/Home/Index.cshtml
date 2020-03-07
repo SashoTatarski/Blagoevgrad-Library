@@ -1,0 +1,54 @@
+﻿@model HomeBooksViewModel
+@{
+    ViewData["Title"] = "Blagoevgrad Public Library";
+}
+
+<style>
+    .card {
+        margin-bottom: 30px;
+    }
+
+    .card-header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        height: 80px;
+    }
+</style>
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+</div>
+
+<div class="row">
+    @foreach (var book in Model.Books)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <h5><a asp-controller="BookManagement" asp-action="BookDetails" asp-route-id="@book.ISBN" class="card-header" style="color:black"><i class="fa fa-book fa-lg" style="color:black" aria-hidden="true"></i>   @book.Title</a></h5>
+                <div class="card-body">
+                    <h5 class="card-title">Rating: @book.Rating</h5>
+                    <p class="card-text">By: @book.AuthorName</p>
+                    <p class="card-text">Publisher: @book.Publisher @book.Year</p>
+                    <a class="btn btn-info" asp-controller="BookManagement" asp-action="BookDetails" asp-route-id="@book.ISBN">See more</a>
+                    @if (User.IsInRole("user"))
+                    {
+                        @if (book.UserStatus == "Restricted")
+                        {
+                        }
+                        else if (book.IsBookCheckedout || book.AreAllCopiesChecked || book.IsChBooksMaxQuota)
+                        {
+                            <a class="btn btn-info disabled" role="button" aria-disabled="true">Checkedout</a>
+                        }
+                        else
+                        {
+                            <a class="btn btn-secondary" asp-controller="UserBooks" asp-action="CheckoutBook" asp-route-id="@book.ISBN">Checkout</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

@@ -1,0 +1,39 @@
+﻿@model RegisterViewModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="col-md-4">
+    <h5>Register</h5>
+    <form asp-action="Register" asp-controller="Auth">
+        <div class="form-group">
+            <i class="fa fa-user" area-hidden="true"></i>
+            <label asp-for="Username" class="control-label"> </label>
+            <input asp-for="Username" class="form-control" />
+            <span asp-validation-for="Username" class="text-danger">  </span>
+        </div>
+        <div class="form-group">
+            <i class="fa fa-key" area-hidden="true"></i>
+            <label asp-for="Password" class="control-label"> </label>
+            <input asp-for="Password" class="form-control" />
+            <span asp-validation-for="Password" class="text-danger">  </span>
+        </div>
+        <div class="form-group">
+            <i class="fa fa-key" area-hidden="true"></i>
+            <label class="control-label">Repeat Password</label>
+            <input asp-for="ComparePassword" class="form-control" />
+            <span asp-validation-for="ComparePassword" class="text-danger">  </span>
+        </div>
+        <div class="form-group">
+            <i class="fa fa-address-card-o" aria-hidden="true"></i>
+            <label class="control-label">Membership</label>
+            <select asp-for="MembershipType" asp-items="@Model.MembershipOption" class="form-control">
+            </select>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Register</button>
+        </div>
+    </form>
+</div>
+
+<partial name="_ReturnButtonsPartial" />

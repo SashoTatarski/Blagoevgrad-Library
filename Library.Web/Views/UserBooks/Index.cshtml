@@ -1,0 +1,59 @@
+﻿@model UserViewModel
+@using Microsoft.Extensions.Primitives
+@{
+    ViewData["Title"] = "Index";
+}
+<h3>Checked Out Books</h3>
+
+@if (Model.CheckedoutBooks.Count == 0)
+{
+    <h4>You do not have any checked out books</h4>
+}
+else
+{
+    <table class="table table-stripped table-bordered table-sm">
+        <tr>
+            <th>Author</th>
+            <th>Title</th>
+            <th>ISBN</th>
+            <th>Check Out Date</th>
+            <th>Due Date</th>
+            <th class="text-center">Actions</th>
+        </tr>
+
+        @foreach (var book in Model.CheckedoutBooks)
+        {
+            <partial name="_BooksReservationsPartial" model="book" />
+        }
+
+    </table>
+}
+@if (Model.ReservedBooks.Count == 0)
+{
+    <h4>You do not have any reserved books</h4>
+}
+else
+{
+    <h3>Reserved Books</h3>
+
+    <table class="table table-stripped table-bordered table-sm">
+        <tr>
+            <th>Author</th>
+            <th>Title</th>
+            <th>ISBN</th>
+            <th></th>
+            <th class="text-center">Actions</th>
+        </tr>
+
+        @foreach (var book in Model.ReservedBooks)
+        {
+            <partial name="_BooksReservationsPartial" model="book" />
+        }
+
+    </table>
+}
+
+<partial name="_ReturnButtonsPartial" />
+
+
+

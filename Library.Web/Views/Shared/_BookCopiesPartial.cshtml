@@ -1,0 +1,48 @@
+﻿@model BookCopyViewModel
+@using Library.Models.Enums;
+@{
+    ViewData["Title"] = "_BookCopiesPartial";
+}
+
+@if (User.IsInRole("admin"))
+{
+    <tr>
+        <td class="text-left">@Model.Title</td>
+
+        @if (Model.Status == BookStatus.Available.ToString())
+        {
+            <td class="text-success text-left">@Model.Status</td>
+        }
+        else
+        {
+            <td class="text-danger text-left">@Model.Status</td>
+        }
+
+        @if (Model.CheckedOutBy != null)
+        {
+            <td class="text-left">
+                <a asp-controller="AccountManagement" asp-action="Details" asp-route-id="@Model.CheckedOutBy.Id"> @Model.CheckedOutBy.Username</a>
+            </td>
+
+        }
+        else
+        {
+            <td class="text-danger text-left">None</td>
+        }
+        @if (Model.ReservedBy.Count != 0)
+        {
+            <td class="text-left">
+                @foreach (var user in Model.ReservedBy)
+                {
+                    <p>
+                    <a asp-controller="AccountManagement" asp-action="Details" asp-route-id="@user.Id">@user.Username</a>
+                    </p>
+                }
+            </td>
+        }
+        else
+        {
+            <td class="text-danger text-left">None</td>
+        }
+    </tr>
+}

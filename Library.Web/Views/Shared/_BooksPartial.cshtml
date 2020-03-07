@@ -1,0 +1,95 @@
+﻿@model BookViewModel
+@{
+    ViewData["Title"] = "_BooksPartial";
+}
+
+<tr>
+    <td class="text-left">
+        <a asp-controller="BookManagement" asp-action="AuthorDetails" asp-route-id="@Model.Author.Id" title="All Books From @Model.Author.Name">@Model.Author.Name</a>
+    </td>
+    <td class="text-left">
+        <a asp-controller="BookManagement" asp-action="BookDetails" asp-route-id="@Model.ISBN" title="View Book Details"> @Model.Title</a>
+    </td>
+    <td class="text-left">@Model.Publisher.Name</td>
+    <td class="text-center">@Model.ISBN</td>
+    <td class="text-center">@Model.Year</td>
+    <td class="text-center">@Model.Rack</td>
+    <td class="text-center">@Model.Rating</td>
+
+    @if (User.IsInRole("admin"))
+    {
+        <td class="text-center">@Model.BookCopies</td>
+    }
+
+
+    @if (User.IsInRole("admin"))
+    {
+        <td class="text-center">
+            <!-- Modal -->
+            <div class="modal fade" id="a-@Model.BookId" tabindex="-1" role="dialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Are you sure?</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body text-left">
+                            Are you sure you want to delete @Model.Title?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                                No
+                            </button>
+                            <a type="button" class="btn btn-info" asp-controller="BookManagement" asp-action="Delete" asp-route-id="@Model.ISBN">
+                                Yes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a asp-controller="BookManagement" asp-action="EditBook" asp-route-id="@Model.BookId" class="text-warning ml-1" title="Edit">
+                <i class="fas fa-edit fa-lg icon-action"></i>
+            </a>
+
+            <a data-toggle="modal" href="#a-@Model.BookId" class="text-danger ml-1" title="Delete">
+                <i class="fa fa-trash fa-lg icon-action"></i>
+            </a>
+        </td>
+
+    }
+    else if (User.IsInRole("user"))
+    {
+<td class="text-center">
+    @if (Model.UserStatus == "Restricted")
+    {
+        <p class="text-danger">Restricted</p>
+    }
+    else if (Model.IsBookCheckedout)
+    {
+        <a class="btn btn-outline-info" asp-controller="UserBooks" asp-action="ExtendDueDate" asp-route-id="@Model.ISBN">Extend</a>
+        <a class="btn btn-info" asp-area="" asp-controller="UserBooks" asp-action="ReturnBook" asp-route-id="@Model.ISBN">Return</a>
+
+    }
+    else if (Model.AreAllCopiesChecked)
+    {
+        <a class="btn btn-outline-info disabled" role="button" aria-disabled="true">Checkedout</a>
+        <a class="btn btn-secondary" asp-area="" asp-controller="UserBooks" asp-action="ReserveBook" asp-route-id="@Model.ISBN">Reserve</a>
+    }
+    else if (Model.IsChBooksMaxQuota)
+    {
+        <a class="btn btn-outline-info disabled" role="button" aria-disabled="true">Checkout</a>
+        <a class="btn btn-secondary" asp-area="" asp-controller="UserBooks" asp-action="ReserveBook" asp-route-id="@Model.ISBN">Reserve</a>
+    }
+    else
+    {
+        <a class="btn btn-info" asp-controller="UserBooks" asp-action="CheckoutBook" asp-route-id="@Model.ISBN">Checkout</a>
+        <a class="btn btn-secondary" asp-area="" asp-controller="UserBooks" asp-action="ReserveBook" asp-route-id="@Model.ISBN">Reserve</a>
+    }
+</td>
+    }
+</tr>
+
+

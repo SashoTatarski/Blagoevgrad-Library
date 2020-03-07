@@ -1,0 +1,19 @@
+﻿@model AddGenreViewModel
+@{
+    ViewData["Title"] = "AddGenre";
+}
+
+<div class="col-md-4">
+    <h5>Add Genre</h5>
+    <form asp-action="AddGenre" asp-controller="BookManagement" method="post">
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"> Enter a new genre </label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger">  </span>
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </form>
+</div>
+<partial name="_ReturnButtonsPartial" />

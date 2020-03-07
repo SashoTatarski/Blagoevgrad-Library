@@ -1,0 +1,20 @@
+﻿@model BookViewModel
+@{
+    ViewData["Title"] = "AddCopies";
+}
+
+<div class="col-md-4">
+    <h5>Add Copies</h5>
+    <form asp-action="AddCopies" asp-controller="BookManagement" method="post">
+        <div class="form-group">
+            <label asp-for="BookCopies" class="control-label"> Enter number of extra copies </label>
+            <input asp-for="BookCopies" class="form-control" />
+            <span asp-validation-for="BookCopies" class="text-danger">  </span>
+        </div>
+        <input type="hidden" asp-for="BookId" value="@Model.BookId" />
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">Add</button>
+        </div>
+    </form>
+</div>
+<partial name="_ReturnButtonsPartial" />

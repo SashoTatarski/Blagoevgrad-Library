@@ -1,0 +1,33 @@
+﻿@model AccountViewModel
+@using Microsoft.Extensions.Primitives;
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="row mt-5">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th>Username</th>
+                <th>Membership Start</th>
+                <th>Membership End</th>
+                <th>Wallet</th>
+                <th class="text-center">Status</th>
+                <th class="text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model.User.Where(x => x.Username != "admin"))
+            {                
+                    <partial name="_UsersPartial" model="user" />                
+            }
+        </tbody>
+    </table>
+</div>
+
+<partial name="_ReturnButtonsPartial" />
+
+
+
+
+

@@ -1,0 +1,74 @@
+﻿@model ListNotificationsViewModel
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Notifications</h1>
+
+<table class="table">
+    <thead class="thead-dark">
+        <tr>
+            <th scope="col">Date</th>
+            @if (User.IsInRole("admin"))
+            {
+                <th scope="col">User</th>
+            }
+            <th scope="col">Message</th>
+            <th scope="col">Seen</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model.NotificationsList)
+        {
+            if (User.IsInRole("admin"))
+            {
+                <tr>
+                    <td scope="row">@item.DateSent.ToShortDateString() @item.DateSent.ToShortTimeString()</td>
+                    <td>
+                        <a asp-controller="AccountManagement" asp-action="Details" asp-route-id="@item.User.Id">
+                            <i class="fa fa-user" aria-hidden="true"></i>
+                            @item.User.Username
+                        </a>
+                    </td>
+                    <td>@item.Message</td>
+                    @if (!item.IsSeen)
+                    {
+                        <td>
+                            <a asp-controller="Notifications" asp-action="MarkSeen" asp-route-id="@item.Id">
+                                <i class="text-center fas fa-eye-slash text-danger icon-action" title="Click to mark as Seen"></i>
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td><i class="text-center fas fa-check-circle text-success" style="font-size: 20px" aria-hidden="true"></i></td>
+                    }
+                </tr>
+            }
+            else if (User.IsInRole("user"))
+            {
+                <tr>
+                    <td scope="row">@item.DateSent.ToShortDateString() @item.DateSent.ToShortTimeString()</td>
+                    <td>@item.Message</td>
+                    @if (!item.IsSeen)
+                    {
+                        <td>
+                            <a asp-controller="Notifications" asp-action="MarkSeen" asp-route-id="@item.Id">
+                                <i class="text-center fas fa-eye-slash text-danger icon-action" title="Click to mark as Seen"></i>
+                            </a>
+                        </td>
+                    }
+                    else
+                    {
+                        <td><i class="text-center fas fa-check-circle text-success" style="font-size: 20px" aria-hidden="true"></i></td>
+                    }
+                </tr>
+            }
+        }
+
+    </tbody>
+</table>
+
+
+<partial name="_ReturnButtonsPartial" />

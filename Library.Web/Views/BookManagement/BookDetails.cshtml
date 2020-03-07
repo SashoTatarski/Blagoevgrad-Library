@@ -1,0 +1,79 @@
+﻿@model BookViewModel
+@using Microsoft.Extensions.Primitives;
+@{
+    ViewData["Title"] = "BookDetails";
+}
+
+<div>
+    <h3>@Model.Title</h3>
+    <h5>ISBN @Model.ISBN</h5>
+    <hr />
+
+    <div>
+        <a class="font-weight-bold">Author: </a>
+        <a asp-controller="BookManagement" asp-action="AuthorDetails" asp-route-id="@Model.Author.Id">@Model.Author.Name</a>
+    </div>
+    <div>
+        <a class="font-weight-bold">Publisher: </a>
+        <a>@Model.Publisher.Name</a>
+    </div>
+    <div>
+        <a class="font-weight-bold">Publication Year: </a>
+        <a>@Model.Year</a>
+    </div>
+    <div>
+        <a class="font-weight-bold">Rack in the library: </a>
+        <a>@Model.Rack</a>
+    </div>
+    <div>
+        <a class="font-weight-bold">Rating: </a>
+        <a>@Model.Rating</a>
+    </div>
+    <div>
+        <a class="font-weight-bold">Genres: </a>
+    </div>
+    <ul>
+        @foreach (var genre in Model.Genres)
+        {
+            <li>
+                @*<a asp-controller="BookManagement" asp-action="GenreDetails" asp-route-id="@genre.Id">@genre.Name</a>*@
+                <a>@genre.Name</a>
+            </li>
+        }
+    </ul>
+    <hr />
+    @if (User.IsInRole("user"))
+    {
+        @if ((!Model.IsBookCheckedout && !Model.AreAllCopiesChecked && !Model.IsChBooksMaxQuota && Model.UserStatus != "Restricted"))
+        {
+            <a class="btn btn-info" asp-controller="UserBooks" asp-action="CheckoutBook" asp-route-id="@Model.ISBN">Checkout</a>
+        }
+    }
+
+    @if (User.IsInRole("admin"))
+    {
+        <div class="form-group">
+            <a class="btn btn-primary" asp-controller="BookManagement" asp-action="EditBook" asp-route-id="@Model.BookId">Edit Book</a>
+            <a class="btn btn-primary" asp-controller="BookManagement" asp-action="AddCopies" asp-route-id="@Model.BookId">Add Copies</a>
+        </div>
+
+        <hr />
+        <table class="table table-stripped table-bordered table-sm">
+            <tr>
+                <th>Title</th>
+                <th>Status</th>
+                <th>Checked Out By</th>
+                <th>Reserved By</th>
+            </tr>
+
+            @foreach (var book in Model.AllBookCopies)
+            {
+                <partial name="_BookCopiesPartial" model="book" />
+            }
+
+        </table>
+    }
+</div>
+
+<partial name="_ReturnButtonsPartial" />
+

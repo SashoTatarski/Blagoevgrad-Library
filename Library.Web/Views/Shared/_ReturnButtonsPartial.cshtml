@@ -1,0 +1,14 @@
+﻿@using Microsoft.Extensions.Primitives
+@{
+    ViewData["Title"] = "_ReturnButtonsPartial";
+}
+
+<div class="row over-footer">
+    <a class="btn btn-dark mr-2" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+    @{ var referrer = this.Context.Request.Headers["Referer"]; }
+
+    @if (referrer != default(StringValues))
+    {
+        <a href="@referrer.ToString()" class="btn btn-outline-dark">Go Back</a>
+    }
+</div>

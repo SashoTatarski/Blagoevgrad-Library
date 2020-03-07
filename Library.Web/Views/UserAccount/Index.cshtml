@@ -1,0 +1,11 @@
+﻿@model UserViewModel
+@using Microsoft.Extensions.Primitives
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="form-group">
+    <a class="btn btn-info" asp-controller="UserAccount" asp-action="CancelAccount" asp-route-id="@Model.UserId">Cancel Account</a>
+</div>
+
+<partial name="_ReturnButtonsPartial" />
