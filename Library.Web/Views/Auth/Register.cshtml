@@ -3,6 +3,11 @@
     ViewData["Title"] = "Register";
 }
 
+@if (TempData["error"] != null)
+{
+    <div class="text-danger text-center">@TempData["error"]</div>
+}
+
 <div class="col-md-4">
     <h5>Register</h5>
     <form asp-action="Register" asp-controller="Auth">

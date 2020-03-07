@@ -88,7 +88,7 @@ namespace Library.Web.Controllers
 
             try
             {
-                viewModel = new RegisterViewModel() { MembershipOption = new List<SelectListItem>() };
+                viewModel.MembershipOption = new List<SelectListItem>();
                 viewModel.MembershipOption.Add(new SelectListItem { Text = Constants.SubscrOneMonth, Value = "1" });
                 viewModel.MembershipOption.Add(new SelectListItem { Text = Constants.SubscrOneYear, Value = "12" });
 
@@ -98,8 +98,10 @@ namespace Library.Web.Controllers
 
                 return BackToHome();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                TempData["error"] = ex.Message;
+
                 return View(viewModel);
             }
         }
